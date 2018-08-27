@@ -5,7 +5,7 @@ Automatically connect with hundreds of people based on specified search terms.
 Please keep in mind that this software violates LinkedIn User Agreement. Use of this script may lead to a ban of the user's account. Use at your own risk!
 
 ## Setup
-Make sure Node.JS is properly installed and runnable. This script requires (https://github.com/GoogleChrome/puppeteer#puppeteer)[Google Chrome's Puppeteer API], so please make sure you have that working.
+Make sure Node.JS is properly installed and runnable. This script requires [https://github.com/GoogleChrome/puppeteer#puppeteer](Google Chrome's Puppeteer API), so please make sure you have that working.
 
 ### config.json
 Modify this file to adjust the search terms. I recommend the following format:
