@@ -1,11 +1,17 @@
 # LinkedInAddBot
 Automatically connect with hundreds of people based on specified search terms.
 
-## *** IMPORTANT ***
+### *** IMPORTANT ***
 Please keep in mind that this software violates LinkedIn User Agreement. Use of this script may lead to a ban of the user's account. Use at your own risk!
 
+## How it works
+LinkedIn only allows users to search and connect to users who are in their connection circle. This means that for new users, who have no connections, a LinkedIn user search will be useless as users will not be able to view search results' profiles. Only connections of connections (2nd connections) or 3rd connections are findable under the LinkedIn search function.
+To circumvent this limitation I used Google to search for potential connections. By using Google search, we are able to find users matching our search criteria and add them automatically to our connections.
+
+Note that Google limits their search results to the first 1000 results, and displays them at 10 results per page. However, I have found that Google will only display results up to page 47 or so. Be aware of these limitations as they can cause the program to stop working for no obvious reason. 
+
 ## Setup
-Make sure Node.JS is properly installed and runnable. This script requires [https://github.com/GoogleChrome/puppeteer#puppeteer](Google Chrome's Puppeteer API), so please make sure you have that working.
+Make sure Node.JS is properly installed and runnable. This script requires [Google Chrome's Puppeteer API](https://github.com/GoogleChrome/puppeteer#puppeteer), so please make sure you have that working.
 
 ### config.json
 Modify this file to adjust the search terms. I recommend the following format:
