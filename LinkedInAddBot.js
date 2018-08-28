@@ -126,7 +126,7 @@ async function run() {
 				return false;
 			}, CONNECT_BUTTON_SELECTOR);
 		} catch (err) {
-			console.log(err);
+			console.log("addFriend() exception caught.");
 			isConnectable = false;
 		}
 		
@@ -218,9 +218,8 @@ async function run() {
 			try {
 				friendable = await addFriend(links[i]);
 			} catch (err) {
-				throw new "Could not addFriend()";				
-			} finally {
 				friendable = false;
+				console.log("addFriend() exception caught");				
 			}
 			let delay = Math.floor(Math.random() * 120000) + 60000;	// Generates a delay between [1,3] minutes;
 			
@@ -229,9 +228,7 @@ async function run() {
 			
 			console.log("Delaying next connection by: " + delay + "ms. ...");
 			await page.waitFor(delay);	// Slows program running speed to avoid being flagged as a bot
-		}
-		
-		
+		}		
 	}
 	// Program entry point
 	console.log("Starting Program...");
