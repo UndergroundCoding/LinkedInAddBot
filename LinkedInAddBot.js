@@ -1,22 +1,3 @@
-// Step 1: Log out
-// Step 2: Log in
-// Step 3: Google search term
-// Step 4: Go to correct page number
-// Step 5: Create array of all 10 links on page
-// Step 6: Go to page
-// Step 7: If "Connect" button available, click, otherwise goto step 6
-// Step 8: Click "Send message"
-// Step 9: Paste message, send.
-// Step 10: repeat step 6 on new link
-
-/** 
- * Methods:
- * bool logIn(credentials);	// return true if login is successful
- * array[] search(term,initial,final);	// returns list of links from search result of pages [initial,final]
- * bool addFriend();	// returns true if added successfully
- * bool addFriend(message);		// Add friend with a message. Returns true if added successfully
- */
- 
 const puppeteer = require('puppeteer');
 const config = require("./config.json");
 const credentials = require("./credentials.json");
@@ -209,10 +190,14 @@ async function run() {
 	
 	async function programRun() {
 		console.log("\nGetting links from Google...");
-		let links = await search(config.searchTerm, 1, 10);	// Note: Running too many pages at once may get user
+		
+		// ##SETPAGENUMBER##
+		/* The range of pages in the function below reads pages in the format [first, last)
+		 * Also note that page number starts at 1, not 0.
+		 */
+		let links = await search(config.searchTerm, 17, 21);	// Note: Running too many pages at once may get user
 																// flagged as a bot and potentially banned.
-																// Recommended: 10 pages
-		//let links = ["https://www.linkedin.com/in/maria-chatani-03185a33/"];		// Debug													
+																// Recommended: 10 pages													
 		
 		let isLoggedIn = false;
 		while(!isLoggedIn) {
@@ -229,14 +214,18 @@ async function run() {
 		for(let i = 0; i < links.length; i++) {
 			console.log("-------------------------");
 			console.log("Working on link (" + i + ") of (" + links.length + ").");
-			let friendable = await addFriend(links[i]);
-			let delay;
-			if(friendable) {
-				delay = Math.floor(Math.random() * 120000) + 60000;	// Generates a delay between [1,3) minutes
-				friendsAdded++;
-			} else {
-				delay = Math.floor(Math.random() * 30000);	// Generates a delay between [1,3) minutes
+			let friendable
+			try {
+				friendable = await addFriend(links[i]);
+			} catch (err) {
+				throw new "Could not addFriend()";				
+			} finally {
+				friendable = false;
 			}
+			let delay = Math.floor(Math.random() * 120000) + 60000;	// Generates a delay between [1,3] minutes;
+			
+			if(friendable)
+				friendsAdded++;
 			
 			console.log("Delaying next connection by: " + delay + "ms. ...");
 			await page.waitFor(delay);	// Slows program running speed to avoid being flagged as a bot
@@ -249,7 +238,7 @@ async function run() {
 	await programRun();
 	console.log("-------------------------");
 	await console.log("\nProgram done!");
-	await console.log("\nNew connections = " + friendsAdded + " out of " + totalLinks ".");
+	await console.log("\nNew connections = " + friendsAdded + " out of " + totalLinks + ".");
 	
 	// Calculate time in readable  format
 	let endTime = Date.now() - startTime;	// Total runtime
