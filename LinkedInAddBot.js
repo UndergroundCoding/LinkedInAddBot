@@ -11,7 +11,7 @@ async function run() {
 	//await page.setViewport({width: 1500, height: 1500})	// For headless: false
 	
 	let totalLinks;
-	let friendsAdded;
+	let friendsAdded = 0;
 	
 	/*
 	 * Log-in to user account
@@ -192,10 +192,10 @@ async function run() {
 		console.log("\nGetting links from Google...");
 		
 		// ##SETPAGENUMBER##
-		/* The range of pages in the function below reads pages in the format [first, last)
+		/* The range of pages in the function below reads pages in the format [first, last]
 		 * Also note that page number starts at 1, not 0.
 		 */
-		let links = await search(config.searchTerm, 17, 21);	// Note: Running too many pages at once may get user
+		let links = await search(config.searchTerm, 22, 30);	// Note: Running too many pages at once may get user
 																// flagged as a bot and potentially banned.
 																// Recommended: 10 pages													
 		
@@ -210,21 +210,19 @@ async function run() {
 		}
 		
 		totalLinks = links.length;
-		friendsAdded = 0;		
 		for(let i = 0; i < links.length; i++) {
 			console.log("-------------------------");
 			console.log("Working on link (" + i + ") of (" + links.length + ").");
-			let friendable
+			let friendable;
 			try {
 				friendable = await addFriend(links[i]);
+				if(friendable)
+					friendsAdded++;
 			} catch (err) {
 				friendable = false;
-				console.log("addFriend() exception caught");				
+				console.log("programRun() exception caught");				
 			}
 			let delay = Math.floor(Math.random() * 120000) + 60000;	// Generates a delay between [1,3] minutes;
-			
-			if(friendable)
-				friendsAdded++;
 			
 			console.log("Delaying next connection by: " + delay + "ms. ...");
 			await page.waitFor(delay);	// Slows program running speed to avoid being flagged as a bot
@@ -235,7 +233,7 @@ async function run() {
 	await programRun();
 	console.log("-------------------------");
 	await console.log("\nProgram done!");
-	await console.log("\nNew connections = " + friendsAdded + " out of " + totalLinks + ".");
+	await console.log("\nNew connections: " + friendsAdded + " out of " + totalLinks + ".");
 	
 	// Calculate time in readable  format
 	let endTime = Date.now() - startTime;	// Total runtime
@@ -243,7 +241,7 @@ async function run() {
 	let mins = Math.floor((endTime / 60000) % 60);
 	let hours = Math.floor(endTime / 3600000);
 	let runTimeString = hours + "hrs " + mins + "mins " + secs + "secs";
-	await console.log("\nTotal runtime = " + runTimeString + ".");
+	await console.log("\nTotal runtime: " + runTimeString + ".");
 	
 	// Done, close out program.
 	await browser.close();
