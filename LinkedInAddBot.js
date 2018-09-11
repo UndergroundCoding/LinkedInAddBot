@@ -72,8 +72,9 @@ async function run() {
 			let newLinks = [];
 			try {
 				newLinks = await page.evaluate(() => {
-						const LINK_SELECTOR = '#rso > div > div > div > div > div > div.r';
-						let searchItems = document.querySelectorAll('#search .g a[href^="https"]');						
+						const LINK_SELECTOR = '#search .g .r a[href^="https"]';
+						let searchItems = document.querySelectorAll(LINK_SELECTOR);
+						console.log("Past selector");						
 
 						if(searchItems.length < 1) {
 							throw "Zero or less search results!";
@@ -90,6 +91,7 @@ async function run() {
 						return tmpLinks;
 				});
 			} catch (err) {
+				console.log("Error in search()");
 				console.log(err);
 			}
 			
@@ -195,7 +197,7 @@ async function run() {
 		/* The range of pages in the function below reads pages in the format [first, last]
 		 * Also note that page number starts at 1, not 0.
 		 */
-		let links = await search(config.searchTerm, 22, 30);	// Note: Running too many pages at once may get user
+		let links = await search(config.searchTerm, 21, 30);	// Note: Running too many pages at once may get user
 																// flagged as a bot and potentially banned.
 																// Recommended: 10 pages													
 		
